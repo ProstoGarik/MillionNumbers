@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,31 +11,31 @@ namespace MillionNumbersClassLib
     {
         private List<int> numberListMain;
         private Random random;
-
+        Stopwatch stopWatch;
         public NumberList()
         {
             random = new Random();
             numberListMain = new List<int>();
+            stopWatch = new Stopwatch();
         }
         public List<int> NumberListMain { get => numberListMain; set => numberListMain = value; }
 
-        public void InitializeList(int count)
+        public void InitializeList(int start, int count)
         {
             numberListMain.Clear();
-            for(int i = 0; i<count; i++)
+            for(int i = start; i<count; i++)
             {
                 numberListMain.Add(random.Next(-100,100));
             }
         }
 
-        public int GetSumBasic()
+        public void GetSumBasic(int start, int end)
         {
             int sum = 0;
-            for(int i=0; i < numberListMain.Count(); i++)
+            for(int i=start; i < end; i++)
             {
                 sum += numberListMain[i];
             }
-            return sum;
         }
 
         public int GetSumPar(int processors)
