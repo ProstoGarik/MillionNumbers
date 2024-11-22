@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MillionNumbersWPFApp"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
@@ -17,35 +18,45 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" Grid.Row="0">
-            <TextBlock Text="Обнаружено ядер: " FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10 0 0 0"/>
-            <TextBlock x:Name="procCountTextBlock" Text="00" FontSize="24" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 150 0"/>
+            <TextBlock Text="Количество ядер: " FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10 0 0 0"/>
+            <ComboBox x:Name="procCountComboBox" Text="00" FontSize="24" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 150 0" Width="40"/>
         </Grid>
         <Grid Grid.Column="0" Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="Начало" Height="45" Width="90" Margin="5 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="16" TextWrapping="Wrap" TextAlignment="Center"/>
-            <TextBlock Text="Конец" Height="45" Width="90" Margin="0 0 5 0" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="16" TextWrapping="Wrap" TextAlignment="Center"/>
-            <TextBox x:Name="counterStartTextBlock" Margin="5 45" Width="90" Height="35" VerticalAlignment="Top" HorizontalAlignment="Left" TextAlignment="Center" FontSize="16" VerticalContentAlignment="Center"/>
-            <TextBox x:Name="counterEndTextBlock" Margin="5 45" Width="90" Height="35" VerticalAlignment="Top" HorizontalAlignment="Right" TextAlignment="Center" FontSize="16" VerticalContentAlignment="Center"/>
+            <TextBlock Text="Число элементов" Height="45" Width="90" Margin="0 0 5 0" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="16" TextWrapping="Wrap" TextAlignment="Center"/>
+            <TextBox x:Name="counterEndTextBlock" Margin="5 45" Width="90" Height="35" VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center" FontSize="16" VerticalContentAlignment="Center"/>
             <Button x:Name="createListButton" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 20 0 0" Click="createListButton_Click">
                 <TextBlock Text="Создать список" FontSize="18"/>
             </Button>
             <TextBlock x:Name="listCreatedLog" VerticalAlignment="Stretch" Text="Создан" HorizontalAlignment="Stretch" FontSize="12" Margin="5 130 5 5" TextAlignment="Center" TextWrapping="Wrap"/>
-            <Grid Grid.Column="1">
-                <TextBlock Text="Считать от" Height="45" Width="90" Margin="5 0 0 0" HorizontalAlignment="Left" TextAlignment="Center" VerticalAlignment="Top" FontSize="16" TextWrapping="Wrap"/>
-                <TextBlock Text="Считать до" Height="45" Width="90" Margin="0 0 5 0" HorizontalAlignment="Right" TextAlignment="Center" VerticalAlignment="Top" FontSize="16" TextWrapping="Wrap"/>
-                <TextBox x:Name="startFromTextBlock" Margin="5 45" Width="90" Height="35" VerticalAlignment="Top" HorizontalAlignment="Left" TextAlignment="Center" FontSize="16" VerticalContentAlignment="Center"/>
-                <TextBox x:Name="endTextBlock" Margin="5 45" Width="90" Height="35" VerticalAlignment="Top" HorizontalAlignment="Right" TextAlignment="Center" FontSize="16" VerticalContentAlignment="Center"/>
-                <Button x:Name="countSumButton" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 20 0 0" Click="countSumButton_Click">
-                    <TextBlock Text="Начать подсчёт" FontSize="18"/>
-                </Button>
-                <TextBlock x:Name="sumCountedLog" VerticalAlignment="Stretch" Text="Подсчитано" HorizontalAlignment="Stretch" FontSize="12" Margin="5 130 5 5" TextAlignment="Center" TextWrapping="Wrap"/>
-            </Grid>
+        </Grid>
+        <Grid Grid.Column="1" Grid.Row="1">
+            <TextBlock Text="Стартовое значение" Height="45" Width="90" Margin="5 0 0 0" HorizontalAlignment="Left" TextAlignment="Center" VerticalAlignment="Top" FontSize="16" TextWrapping="Wrap"/>
+            <TextBlock Text="Шаг" Height="45" Width="90" Margin="5 0 0 0" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Top" FontSize="16" TextWrapping="Wrap"/>
+            <TextBlock Text="Максимальное значение" Height="45" Width="90" Margin="0 0 5 0" HorizontalAlignment="Right" TextAlignment="Center" VerticalAlignment="Top" FontSize="13" TextWrapping="Wrap"/>
+            <TextBox x:Name="startFromTextBlock" Margin="5 45" Width="90" Height="35" VerticalAlignment="Top" HorizontalAlignment="Left" TextAlignment="Center" FontSize="16" VerticalContentAlignment="Center"/>
+            <TextBox x:Name="stepTextBlock" Margin="5 45" Width="90" Height="35" VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center" FontSize="16" VerticalContentAlignment="Center"/>
+            <TextBox x:Name="endTextBlock" Margin="5 45" Width="90" Height="35" VerticalAlignment="Top" HorizontalAlignment="Right" TextAlignment="Center" FontSize="16" VerticalContentAlignment="Center"/>
+            <Button x:Name="countSumButton" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 20 0 0" Click="countSumButton_Click">
+                <TextBlock Text="Начать подсчёт" FontSize="18"/>
+            </Button>
+            <TextBlock x:Name="sumCountedLog" VerticalAlignment="Stretch" Text="Подсчитано" HorizontalAlignment="Stretch" FontSize="12" Margin="5 130 5 5" TextAlignment="Center" TextWrapping="Wrap"/>
         </Grid>
         <Grid Grid.Row="2" Grid.Column="0">
-            <TextBox x:Name="resultLog" Text="Результаты подсчётов" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5" FontSize="22" VerticalContentAlignment="Top" IsReadOnly="True" TextWrapping="Wrap"/>
+            <TextBox x:Name="resultLog" Text="Результаты подсчётов" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5" FontSize="12" VerticalContentAlignment="Top" IsReadOnly="True" TextWrapping="Wrap"/>
+        </Grid>
+        <Grid Grid.Column="1" Grid.Row="2">
+            <lvc:CartesianChart Name="Chart" LegendLocation="Right" Visibility="Collapsed">
+                <lvc:CartesianChart.AxisY>
+                    <lvc:Axis Name="TimeAxis" Labels="" Title="Время (мс)">
+                        <lvc:Axis.Separator>
+                            <lvc:Separator Step="0.01"/>
+                        </lvc:Axis.Separator>
+                    </lvc:Axis>
+                </lvc:CartesianChart.AxisY>
+                <lvc:CartesianChart.AxisX>
+                    <lvc:Axis Name="ElementCountAxis" Title="Число элементов"></lvc:Axis>
+                </lvc:CartesianChart.AxisX>
+            </lvc:CartesianChart>
         </Grid>
         
     </Grid>

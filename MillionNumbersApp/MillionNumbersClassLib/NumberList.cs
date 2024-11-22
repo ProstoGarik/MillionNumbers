@@ -20,10 +20,10 @@ namespace MillionNumbersClassLib
         }
         public List<int> NumberListMain { get => numberListMain; set => numberListMain = value; }
 
-        public void InitializeList(int start, int count)
+        public void InitializeList(int count)
         {
             numberListMain.Clear();
-            for(int i = start; i<count; i++)
+            for(int i = 0; i<count; i++)
             {
                 numberListMain.Add(random.Next(-100,100));
             }
