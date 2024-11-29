@@ -45,17 +45,13 @@
             <TextBox x:Name="resultLog" Text="Результаты подсчётов" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5" FontSize="12" VerticalContentAlignment="Top" IsReadOnly="True" TextWrapping="Wrap"/>
         </Grid>
         <Grid Grid.Column="1" Grid.Row="2">
-            <lvc:CartesianChart Name="Chart" LegendLocation="Right" Visibility="Collapsed">
-                <lvc:CartesianChart.AxisY>
-                    <lvc:Axis Name="TimeAxis" Labels="" Title="Время (мс)">
-                        <lvc:Axis.Separator>
-                            <lvc:Separator Step="0.01"/>
-                        </lvc:Axis.Separator>
-                    </lvc:Axis>
-                </lvc:CartesianChart.AxisY>
+            <lvc:CartesianChart Name="Chart" LegendLocation="Right">
                 <lvc:CartesianChart.AxisX>
                     <lvc:Axis Name="ElementCountAxis" Title="Число элементов"></lvc:Axis>
                 </lvc:CartesianChart.AxisX>
+                <lvc:CartesianChart.AxisY>
+                    <lvc:Axis Name="TimeAxis" Title="Время (мс)"></lvc:Axis>
+                </lvc:CartesianChart.AxisY>
             </lvc:CartesianChart>
         </Grid>
         

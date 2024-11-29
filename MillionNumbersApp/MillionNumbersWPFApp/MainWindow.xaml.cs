@@ -12,6 +12,11 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using LiveCharts;
 using LiveCharts.Wpf;
+using System.Collections.Generic;
+using System.Diagnostics.Metrics;
+using System.ComponentModel;
+using LiveCharts.Defaults;
+using System;
 
 namespace MillionNumbersWPFApp
 {
@@ -23,18 +28,26 @@ namespace MillionNumbersWPFApp
         private NumberList numberList;
         private int ProcCount = Environment.ProcessorCount;
         private Stopwatch stopWatch;
-        public SeriesCollection SeriesCollection;
+        public SeriesCollection SeriesCollection { get; set; }
         public List<string> ElementCountLabel;
         public List<string> TimeCountLabel;
+        private Random random;
         public MainWindow()
         {
+            DataContext = this;
+
             InitializeComponent();
             SeriesCollection = new SeriesCollection
             {
                 new LineSeries
                 {
                     Title = "Последовательно",
-                    Values = new ChartValues<double>{ }
+                    Values = new ChartValues<ObservablePoint>{ }
+                },
+                new LineSeries
+                {
+                    Title = "Параллельно",
+                    Values = new ChartValues<ObservablePoint>{ }
                 }
             };
             ElementCountLabel = new List<string> { };
@@ -45,10 +58,11 @@ namespace MillionNumbersWPFApp
             resultLog.Text = "";
             listCreatedLog.Text = "";
             sumCountedLog.Text = "";
+            random = new Random();
             
             Chart.Series = SeriesCollection;
             Chart.Visibility = Visibility.Visible;
-            DataContext = this;
+
         }
 
         private void createListButton_Click(object sender, RoutedEventArgs e)
@@ -62,24 +76,34 @@ namespace MillionNumbersWPFApp
             int start = Convert.ToInt32(startFromTextBlock.Text);
             int end = Convert.ToInt32(endTextBlock.Text);
             int step = Convert.ToInt32(stepTextBlock.Text);
-            int stepsCount = end/step;
-            List<string> TimeCountLabel = new List<string>();
-            for (int i = 0; i < end/step; i++)
+            int stepsCount = end / step;
+
+            SeriesCollection[0].Values.Clear();
+            SeriesCollection[1].Values.Clear();
+
+            for (int i = 0; i <= stepsCount; i++)
             {
-                ElementCountLabel.Add((step * i).ToString());
-            }
-            ElementCountAxis.Labels = ElementCountLabel.ToArray();
-            for (int i = 1; i <= stepsCount; i++)
-            {
+                end = step * i;
+
                 stopWatch.Reset();
                 stopWatch.Start();
-                end = step * i;
+
                 numberList.GetSumBasic(start, end);
+
                 stopWatch.Stop();
-                TimeCountLabel.Add(stopWatch.Elapsed.TotalMilliseconds.ToString());
-                resultLog.Text += "Последовательно подсчитано " + (end - start) + " элементов за " + stopWatch.Elapsed.TotalMilliseconds + " милисекунд\n";
-                SeriesCollection[0].Values.Add(stopWatch.Elapsed.TotalMilliseconds);
-                TimeAxis.Labels = TimeCountLabel.ToArray();
+
+                resultLog.Text += $"Последовательно подсчитано {end - start} элементов за {stopWatch.Elapsed.TotalMilliseconds} миллисекунд\n";
+                SeriesCollection[0].Values.Add(new ObservablePoint(end, stopWatch.Elapsed.TotalMilliseconds));
+
+                stopWatch.Reset();
+                stopWatch.Start();
+
+                numberList.GetSumPar(Convert.ToInt32(procCountComboBox.SelectedValue), start, end);
+
+                stopWatch.Stop();
+
+                resultLog.Text += $"Параллельно подсчитано {end - start} элементов за {stopWatch.Elapsed.TotalMilliseconds} миллисекунд\n";
+                SeriesCollection[1].Values.Add(new ObservablePoint(end, stopWatch.Elapsed.TotalMilliseconds));
             }
         }
 

@@ -38,7 +38,7 @@ namespace MillionNumbersClassLib
             }
         }
 
-        public int GetSumPar(int processors)
+        public int GetSumPar(int processors, int start, int end)
         {
             int[] partialSums = new int[processors];
 
